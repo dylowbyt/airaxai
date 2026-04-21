@@ -3,8 +3,12 @@
 import { motion } from "framer-motion";
 import { Sparkles, ArrowRight, Play } from "lucide-react";
 import Image from "next/image";
+import { createClient } from "@/lib/supabase/client";
+
 
 export default function HeroSection() {
+  const supabase = createClient();
+
   return (
     <section
       id="hero"
@@ -86,10 +90,23 @@ export default function HeroSection() {
           transition={{ duration: 0.7, delay: 0.45 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <a href="#gallery" className="btn-primary flex items-center gap-2 text-sm sm:text-base w-full sm:w-auto justify-center">
+          <button 
+            onClick={async () => {
+              const { data: { session } } = await supabase.auth.getSession();
+              if (session) {
+                window.location.href = "/dashboard";
+              } else {
+                await supabase.auth.signInWithOAuth({
+                  provider: "google",
+                  options: { redirectTo: `${window.location.origin}/auth/callback` }
+                });
+              }
+            }}
+            className="btn-primary flex items-center gap-2 text-sm sm:text-base w-full sm:w-auto justify-center cursor-pointer"
+          >
             Mulai Sekarang
             <ArrowRight className="w-4 h-4" />
-          </a>
+          </button>
           <a href="#gallery" className="btn-secondary flex items-center gap-2 text-sm sm:text-base w-full sm:w-auto justify-center">
             <Play className="w-4 h-4" />
             Lihat Demo
