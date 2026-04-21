@@ -162,6 +162,9 @@ export default function ShortsPage() {
       caption: "",
       captionPosition: "bottom",
       captionStyle: "bold",
+      title: "",
+      description: "",
+      hashtags: "#ai #shorts #airax",
     });
     setError(null);
   }

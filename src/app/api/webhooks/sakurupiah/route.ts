@@ -3,12 +3,11 @@ import { createClient } from "@supabase/supabase-js";
 import crypto from "crypto";
 
 // Admin client bypasses RLS for webhook operations
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
 export async function POST(req: NextRequest) {
+  const supabaseAdmin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
   try {
     // Get raw body for signature verification
     const rawBody = await req.text();
